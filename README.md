@@ -60,15 +60,15 @@ python scripts/stress_test.py --workers=10 --duration=60
 ```
 # Key Files
 
-├── backend/
-│   ├── main.py                 # FastAPI endpoints
-│   └── conflict_check.lua      # Collision detection
-├── frontend/
-│   ├── map.html                # Live tracking UI
-│   └── styles.css              # Map styling
-├── scripts/
-│   ├── simulate.py             # Test data generator
-│   └── stress_test.py          # Performance tester
+**backend/**
+- main.py (FastAPI endpoints)
+- conflict_check.lua (Collision detection)
+**frontend/**
+- map.html (Live tracking UI)
+- styles.css (Map styling)
+**scripts/**
+- simulate.py (Test data generator)
+- stress_test.py (Performance tester)
 
 # Redis Model Data
 
