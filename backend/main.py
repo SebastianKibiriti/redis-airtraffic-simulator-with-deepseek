@@ -5,7 +5,7 @@ import json
 app = FastAPI()
 r = redis.Redis(host='localhost', port=6379)
 
-CONFLICT_SCRIPT_SHA = f744b0229e689e69fe14c655a774c6aecb584c28   # From Step 2
+CONFLICT_SCRIPT_SHA = "f744b0229e689e69fe14c655a774c6aecb584c28"   # From Step 2
 
 @app.post("/update_position")
 async def update_position(aircraft_id: str, lng: float, lat: float, alt: int, speed: int):
