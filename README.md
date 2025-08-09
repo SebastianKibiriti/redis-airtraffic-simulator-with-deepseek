@@ -42,6 +42,7 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 # ⚙️ Running the System
+```bash
 ### Start Redis Stack
 docker run -d -p 6379:6379 -p 8001:8001 --name redis-airtraffic redis/redis-stack:latest
 
