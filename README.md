@@ -41,16 +41,15 @@ python -m venv venv
 ### Install dependencies
 pip install -r requirements.txt
 ```
-### Running the System
-
-# Start Redis Stack
+# ⚙️ Running the System
+### Start Redis Stack
 docker run -d -p 6379:6379 -p 8001:8001 --name redis-airtraffic redis/redis-stack:latest
 
-# Launch backend
+### Launch backend
 uvicorn backend.main:app --reload
 
-# Generate test data (new terminal)
+### Generate test data (new terminal)
 python scripts/simulate.py
 
-# Optional: Stress test
+### Optional: Stress test
 python scripts/stress_test.py --workers=10 --duration=60
