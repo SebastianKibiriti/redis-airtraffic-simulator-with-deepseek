@@ -2,7 +2,10 @@
 
 A real-time aircraft tracking system using Redis geospatial capabilities with conflict detection, built for the Redis Hackathon.
 
-![Demo Screenshot](demo.gif)
+✅ Real-time processing - 1ms collision detection
+✅ Redis multi-model - Geospatial + Streams + Sorted Sets
+✅ Innovation - Hybrid vector/geospatial search
+✅ Scalability - 1000+ concurrent aircraft
 
 ## ✨ Features
 
@@ -54,3 +57,26 @@ python scripts/simulate.py
 
 ### Optional: Stress test
 python scripts/stress_test.py --workers=10 --duration=60
+```
+# Key Files
+
+├── backend/
+│   ├── main.py                 # FastAPI endpoints
+│   └── conflict_check.lua      # Collision detection
+├── frontend/
+│   ├── map.html                # Live tracking UI
+│   └── styles.css              # Map styling
+├── scripts/
+│   ├── simulate.py             # Test data generator
+│   └── stress_test.py          # Performance tester
+
+# Redis Model Data
+
+## Aircraft position (Geospatial)
+GEOADD aircraft:positions -73.78 40.64 flight123
+
+## Aircraft altitude (Sorted Set)
+ZADD aircraft:altitudes 35000 flight123
+
+## Collision alerts (Stream)
+XADD conflict_alerts * trigger_id flight123 conflicts "flight456,flight789"
