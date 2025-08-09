@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Air Traffic Monitor</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map { height: 600px; }
+        .conflict { color: red; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="alerts"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        const map = L.map('map').setView([40.6413, -73.7781], 10);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        
+        const aircraftMarkers = {};
+        const ws = new WebSocket(`ws://${window.location.hostname}:8000/alerts`);
+        
+        ws.onmessage = (e) => {
+            const alert = JSON.parse(e.data);
+            document.getElementById('alerts').innerHTML += 
+                `<p class="conflict">CONFLICT: ${alert.trigger_id} with ${alert.conflicts}</p>`;
+        };
+        
+        // Update positions every 2 seconds
+        setInterval(async () => {
+            // Use a relative path for the API call to support any host.
+            const response = await fetch('/current_positions');
+            const aircraft = await response.json();
+            const receivedAircraftIds = new Set();
+            
+            aircraft.forEach(plane => {
+                receivedAircraftIds.add(plane.id);
+                if (!aircraftMarkers[plane.id]) {
+                    aircraftMarkers[plane.id] = L.marker([plane.lat, plane.lng])
+                        .bindPopup(`Flight ${plane.id}<br>Alt: ${plane.alt}ft`)
+                        .addTo(map);
+                } else {
+                    aircraftMarkers[plane.id].setLatLng([plane.lat, plane.lng]);
+                }
+            });
+
+            // Remove markers for aircraft that are no longer in the data feed.
+            for (const id in aircraftMarkers) {
+                if (!receivedAircraftIds.has(id)) {
+                    map.removeLayer(aircraftMarkers[id]);
+                    delete aircraftMarkers[id];
+                }
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
