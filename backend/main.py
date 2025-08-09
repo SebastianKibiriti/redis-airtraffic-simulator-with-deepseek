@@ -20,7 +20,7 @@ async def update_position(data: PositionUpdate):
     # Store position
     r.geoadd(
         "aircraft:positions", 
-        {data.aircraft_id: (data.lng, data.lat)}  # New Redis-py syntax
+        {data.aircraft_id: (data.lng, data.lat)}  # New Redis-py syntax 
     )
     r.zadd("aircraft:altitudes", {data.aircraft_id: data.alt})
     
